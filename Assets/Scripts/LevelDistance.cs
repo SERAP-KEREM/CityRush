@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -9,10 +9,11 @@ public class LevelDistance : MonoBehaviour
     public int disRun;
     public bool addingDis = false;
     public float disDelay = 0.25f;
+    bool isStart = true;
 
     private void Update()
     {
-        if (addingDis == false)
+        if (addingDis == false )
         {
             addingDis = true;
             StartCoroutine(AddingDis());
@@ -22,6 +23,12 @@ public class LevelDistance : MonoBehaviour
 
     IEnumerator AddingDis()
     {
+        if(isStart)
+        {
+            isStart = false;    
+            yield return new WaitForSeconds(4f);
+        }
+       
         disRun++;
         disPlay.GetComponent<TextMeshProUGUI>().text = "" + disRun;
         yield return new WaitForSeconds(disDelay);
