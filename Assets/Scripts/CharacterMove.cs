@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class CharacterMove : MonoBehaviour
 {
     public float moveSpeed = 3f;
     public float leftRightSpeed = 4f;
@@ -20,7 +20,7 @@ public class CharacterController : MonoBehaviour
 
     public float jumpForce = 5f;
     public float slideSpeed = 5f;
-    private bool isGrounded = true;
+ //   private bool isGrounded = true;
     private bool isSliding = false;
     private void Start()
     {
@@ -62,7 +62,7 @@ public class CharacterController : MonoBehaviour
 
                     rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset y velocity to zero
                     rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                    isGrounded = false;
+                  //  isGrounded = false;
                     playerAnimator.SetTrigger("isJump");
 
                 }
@@ -87,7 +87,7 @@ public class CharacterController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
-            isGrounded = true;
+           // isGrounded = true;
         //    playerAnimator.SetBool("Grounded", true);
         }
     }
