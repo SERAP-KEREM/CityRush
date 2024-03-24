@@ -1,5 +1,7 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -17,6 +19,11 @@ public class Character : MonoBehaviour
     public bool SwipeRight;
     public float XValue;
     private CharacterController characterController;
+
+    public bool isStart;
+    public TextMeshProUGUI playgameText;
+
+
     private float x;
     public float speedDodge;
     public float jumpPower=7f;
@@ -37,6 +44,8 @@ public class Character : MonoBehaviour
 
     private void Start()
     {
+        StartCoroutine(PlayGame());
+
         characterController = GetComponent<CharacterController>();
         colliderHeight = characterController.height;
         colliderCenterY = characterController.center.y;
@@ -50,76 +59,92 @@ public class Character : MonoBehaviour
         SwipeRight = Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow);
         SwipeUp = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
         SwipeDown = Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow);
-
-        
-        if (SwipeLeft && !inRoll)
-        {
-            if (midSide == SIDE.Mid)
-            {
-                newXpos = -XValue;
-                midSide=SIDE.Left;
-                playerAnimator.Play("Left");
-            }
-            else if (midSide == SIDE.Right)
-            {
-                newXpos = 0;
-                midSide = SIDE.Mid;
-                playerAnimator.Play("Left");
-            }
-        }
-        else if(SwipeRight&& !inRoll) 
+        if (isStart)
         {
 
-            if (midSide == SIDE.Mid)
+            playerAnimator.SetBool("isRunning",true);
+            if (SwipeLeft && !inRoll)
             {
-                newXpos = XValue;
-                midSide=SIDE.Right;
-                playerAnimator.Play("Right");
+                if (midSide == SIDE.Mid)
+                {
+                    newXpos = -XValue;
+                    midSide = SIDE.Left;
+                    //
+                    //
+                    //playerAnimator.Play("leftStrafe");
+                   playerAnimator.SetTrigger("leftStrafe");
+                   // playerAnimator.SetBool("isRunning", false);
+                }
+                else if (midSide == SIDE.Right)
+                {
+                    newXpos = 0;
+                    midSide = SIDE.Mid;
+                    playerAnimator.SetTrigger("leftStrafe");
+                    //playerAnimator.SetBool("isRunning", false);
 
+
+
+                }
             }
-            else if (midSide == SIDE.Left)
+            else if (SwipeRight && !inRoll)
             {
-                newXpos = 0;
-                midSide = SIDE.Mid;
-                playerAnimator.Play("Right");
+            
+                if (midSide == SIDE.Mid)
+                {
+                    newXpos = XValue;
+                    midSide = SIDE.Right;
+                    playerAnimator.SetTrigger("rightStrafe");
+                   // playerAnimator.SetBool("isRunning", false);
 
+
+
+                }
+                else if (midSide == SIDE.Left)
+                {
+                    newXpos = 0;
+                    midSide = SIDE.Mid;
+                    playerAnimator.SetTrigger("rightStrafe");
+                  //  playerAnimator.SetBool("isRunning", false);
+
+
+
+                }
             }
+            Vector3 moveVector = new Vector3(x - transform.position.x, y * Time.deltaTime, fwdSpeed * Time.deltaTime);
+            x = Mathf.Lerp(x, newXpos, Time.deltaTime * speedDodge);
+             characterController.Move(moveVector);
+            Jump();
+            Roll();
         }
-        Vector3 moveVector = new Vector3(x - transform.position.x, y * Time.deltaTime, fwdSpeed * Time.deltaTime);
-        x=Mathf.Lerp(x,newXpos,Time.deltaTime* speedDodge);
-      //  characterController.Move(moveVector);
-        Jump();
-        Roll();
-
     }
     public void Jump()
     {
-        if(characterController.isGrounded )
+        if (characterController.isGrounded)
         {
-            if(playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Falling"))
+           
+            if (playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Fall"))
             {
                 playerAnimator.Play("Landing");
                 inJump = false;
             }
-            if(SwipeUp) {
+            if (SwipeUp)
+            {
                 y = jumpPower;
-               // playerAnimator.CrossFadeInFixedTime("Jump", 0.1f);
+                playerAnimator.SetBool("isRunning", false);
+                playerAnimator.SetBool("isJump",true);
                 inJump = true;
-
             }
         }
         else
         {
-            y-=jumpPower*2*Time.deltaTime;
-            if ((characterController.velocity.y<-0.1f))
+            y -= jumpPower * 2 * Time.deltaTime;
+            if (characterController.velocity.y < -0.1f)
             {
-                
+                playerAnimator.Play("Fall");
             }
-           // playerAnimator.Play("Falling");
         }
     }
 
-  
 
     public void Roll()
     {
@@ -138,8 +163,10 @@ public class Character : MonoBehaviour
             y -= 10f;
             characterController.center=new Vector3(0,colliderCenterY/2f,0);
             characterController.height = colliderHeight/2f;
-            playerAnimator.CrossFadeInFixedTime("Roll", 0.1f);
-            inRoll= true;
+            //playerAnimator.CrossFadeInFixedTime("isSlide", 0.1f);
+            playerAnimator.SetBool("isRunning", false);
+            playerAnimator.SetBool("isSlide", true);
+            inRoll = true;
             inJump=false;
 
         }
@@ -167,4 +194,20 @@ public class Character : MonoBehaviour
 
     }
 
+    IEnumerator PlayGame()
+    {
+
+        playgameText.text = "3";
+        yield return new WaitForSeconds(1f);
+        playgameText.text = "2";
+        yield return new WaitForSeconds(1f);
+        playgameText.text = "1";
+        yield return new WaitForSeconds(1f);
+        playgameText.text = "GO!";
+        yield return new WaitForSeconds(1f);
+        playgameText.text = "";
+        isStart = true;
+
+
+    }
 }

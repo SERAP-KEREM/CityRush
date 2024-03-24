@@ -337,7 +337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 27.884216, y: -0.4883728}
+  m_AnchoredPosition: {x: 27.884216, y: -0.4883709}
   m_SizeDelta: {x: 229.0981, y: 35.872}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &208718180
@@ -1084,7 +1084,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 27.884216, y: -0.4883728}
+  m_AnchoredPosition: {x: 27.884216, y: -0.4883709}
   m_SizeDelta: {x: 229.0981, y: 35.872}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231714881
@@ -4349,7 +4349,7 @@ Transform:
   m_GameObject: {fileID: 6822526165545669692}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.5, z: -50}
+  m_LocalPosition: {x: 0, y: -2.7, z: -50}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -4750,12 +4750,14 @@ MonoBehaviour:
   SwipeDown: 0
   SwipeLeft: 0
   SwipeRight: 0
-  XValue: 0
+  XValue: 3.5
+  isStart: 0
+  playgameText: {fileID: 1465168250}
   speedDodge: 7
   jumpPower: 7
   inJump: 0
   inRoll: 0
-  fwdSpeed: 2
+  fwdSpeed: 5
   playerAnimator: {fileID: 6822526165545669694}
   colliderHeight: 0
   colliderCenterY: 0
